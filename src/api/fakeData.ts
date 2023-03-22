@@ -1,6 +1,4 @@
 import {
-  WaitingOrder,
-  OrderType,
   OrderAction,
   OrderBookList,
   Trend,

@@ -35,3 +35,4 @@ yarn cy:e2e
 ## Production
 
 > Link Production
+> https://ob-ui-test.vercel.app/

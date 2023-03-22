@@ -14,9 +14,7 @@ import {
 import { favoredState } from '@/recoil/states/favoredState';
 import { modalSearchState } from '@/recoil/states/modalSearchState';
 
-type ModalSearchProps = {};
-
-const ModalSearch: React.FC<ModalSearchProps> = ({}) => {
+const ModalSearch: React.FC = () => {
   const setOrder = useSetRecoilState(setlimitOrder);
   const [favoredStateValue, setFavoredStateValue] =
     useRecoilState(favoredState);
