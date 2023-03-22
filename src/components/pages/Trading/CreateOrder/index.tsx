@@ -4,8 +4,7 @@ import Icon from '@/components/Icon';
 import Collapsible from '@/components/Collapsible';
 import classnames from 'classnames';
 import { USD_FEE_ESTIMATED } from '@/api/fakeData';
-import ModalSearch from '../ModalSearch';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { limitOrderValue, userWalletBalance } from '@/recoil/store';
 import {
   Arrow1Icon,
@@ -15,16 +14,26 @@ import {
   Quick25,
   Quick25n2,
   Quick25n3,
+  Quick50,
+  Quick50n2,
   SwapDeco,
 } from '@/assets';
+import { WaitingOrder, OrderType, OrderAction } from '@/api/models';
+import { ordersState } from '@/recoil/states/ordersState';
+import { modalSearchState } from '@/recoil/states/modalSearchState';
 
 export default function CreateOrder() {
-  const [modalSearchShow, setModalSearchShow] = useState<boolean>(false);
+  const rate = 0.0002; // 1 BNB = 0.00035 EGLD
+
   const [limitOrder, setLimitOrder] = useRecoilState(limitOrderValue);
   const walletBalance = useRecoilValue(userWalletBalance);
   const [tabOpening, setTabOpening] = useState<'SELL' | 'BUY'>('BUY');
   const [inputSpend, setInputSpend] = useState<number>(0);
+  const [inputBuy, setInputBuy] = useState<number>(0);
+  const [inputPrice, setInputPrice] = useState<number | null>();
   const [coinUnitCalculated, setCoinUnitCalculated] = useState<string[]>([]);
+  const [orders, setOrders] = useRecoilState(ordersState);
+  const setIsShow = useSetRecoilState(modalSearchState);
 
   function getBalanceByToken(token: string) {
     const balance = walletBalance.find(i => i.token === token);
@@ -43,11 +52,55 @@ export default function CreateOrder() {
   }
 
   function handleQuickSetInputSpend(percent: number) {
-    setInputSpend((getBalanceByToken(limitOrder.sell.token) * percent) / 100);
+    handleChangeValueSpend(
+      (getBalanceByToken(limitOrder.sell.token) * percent) / 100
+    );
   }
 
   function handleSwitchCoinUnitCalculated() {
     setCoinUnitCalculated(prev => [prev[1], prev[0]]);
+  }
+
+  function handleChangeValueSpend(value: number) {
+    setInputSpend(value);
+    if (tabOpening === 'BUY') setInputBuy(value / rate);
+    else setInputBuy(value * rate);
+  }
+
+  function handleChangeValueBuy(value: number) {
+    setInputBuy(value);
+    if (tabOpening === 'BUY') setInputSpend(value * rate);
+    else setInputSpend(value / rate);
+  }
+
+  function checkDisableActionButton() {
+    if (!inputBuy || inputBuy == 0 || !inputSpend || inputSpend == 0)
+      return true;
+    return false;
+  }
+
+  function handleSubmitOrder() {
+    const valueSubmit: WaitingOrder = {
+      id: `ORDER${Date.now()} ${Math.floor(1000 + Math.random() * 9000)}`,
+      time: Date.now(),
+      type: OrderType.LIMIT_ORDER,
+      action: tabOpening as OrderAction,
+      pair: tabOpening === 'BUY' ? 'BNB-EGLD' : 'EGLD-BNB',
+      price: {
+        token: coinUnitCalculated[1],
+        value: inputPrice ?? 0.0,
+      },
+      amount: {
+        token: tabOpening === 'BUY' ? 'BNB' : 'EGLD',
+        value: inputBuy,
+      },
+      valueUSDC: {
+        token: tabOpening !== 'BUY' ? 'BNB' : 'EGLD',
+        value: inputSpend,
+      },
+    };
+
+    setOrders([valueSubmit, ...orders]);
   }
 
   useEffect(() => {
@@ -56,6 +109,11 @@ export default function CreateOrder() {
       setCoinUnitCalculated([limitOrder.buy.token, limitOrder.sell.token]);
     } else setCoinUnitCalculated([limitOrder.sell.token, limitOrder.buy.token]);
   }, [limitOrder]);
+
+  useEffect(() => {
+    setInputBuy(0);
+    setInputSpend(0);
+  }, [tabOpening]);
 
   return (
     <>
@@ -138,6 +196,8 @@ export default function CreateOrder() {
                 id="input-group-1"
                 className="h-10 p-2.5 px-12 text-right text-lg"
                 placeholder="0.0"
+                value={inputPrice ?? ''}
+                onChange={e => setInputPrice(e.target.valueAsNumber)}
               />
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <span className="text-xs text-[#A5A6F6]">
@@ -153,7 +213,7 @@ export default function CreateOrder() {
                 <span className="mb-4 block text-xs text-disabled">Spend</span>
                 <div
                   className="focus:blueBg flex w-28 cursor-pointer items-center rounded-lg px-2 py-1 hover:bg-blackBg"
-                  onClick={() => setModalSearchShow(true)}
+                  onClick={() => setIsShow(true)}
                 >
                   {limitOrder.sell.image && (
                     <Image src={limitOrder.sell.image} width={20} height={20} />
@@ -168,7 +228,7 @@ export default function CreateOrder() {
                 type="number"
                 id="input-group-1"
                 value={inputSpend}
-                onChange={e => setInputSpend(e.target.valueAsNumber)}
+                onChange={e => handleChangeValueSpend(e.target.valueAsNumber)}
                 className="h-16 w-24 flex-auto p-2.5 text-right text-2xl"
                 placeholder="0.0"
               />
@@ -205,9 +265,9 @@ export default function CreateOrder() {
                   onClick={() => handleQuickSetInputSpend(50)}
                 >
                   <Icon
-                    defaultSrc={Quick25}
-                    hoverSrc={Quick25n2}
-                    focusSrc={Quick25n3}
+                    defaultSrc={Quick50}
+                    hoverSrc={Quick50n2}
+                    focusSrc={Quick50n2}
                   />
                   <span className="absolute bottom-0 left-6 z-10 text-[#7879F1] opacity-0 duration-500 group-hover:bottom-3 group-hover:opacity-100 group-hover:ease-in-out">
                     50%
@@ -218,9 +278,9 @@ export default function CreateOrder() {
                   onClick={() => handleQuickSetInputSpend(75)}
                 >
                   <Icon
-                    defaultSrc={Quick25}
-                    hoverSrc={Quick25n2}
-                    focusSrc={Quick25n3}
+                    defaultSrc={Quick50}
+                    hoverSrc={Quick50n2}
+                    focusSrc={Quick50n2}
                     className="-scale-x-100 transform"
                   />
                   <span className="absolute bottom-0 left-6 z-10 text-[#7879F1] opacity-0 duration-500 group-hover:bottom-3 group-hover:opacity-100 group-hover:ease-in-out">
@@ -248,7 +308,7 @@ export default function CreateOrder() {
                 <span className="mb-4 block text-xs text-disabled">Buy</span>
                 <div
                   className="focus:blueBg flex w-28 cursor-pointer items-center rounded-lg px-2 py-1 hover:bg-blackBg"
-                  onClick={() => setModalSearchShow(true)}
+                  onClick={() => setIsShow(true)}
                 >
                   {limitOrder.buy.image && (
                     <Image src={limitOrder.buy.image} width={20} height={20} />
@@ -264,6 +324,8 @@ export default function CreateOrder() {
                 id="input-group-1"
                 className="h-16 w-24 flex-auto p-2.5 text-right text-2xl"
                 placeholder="0.0"
+                onChange={e => handleChangeValueBuy(e.target.valueAsNumber)}
+                value={inputBuy}
               />
             </div>
             <span className="mt-2 block text-right text-xs text-disabled">
@@ -273,18 +335,17 @@ export default function CreateOrder() {
             <button
               className={classnames(
                 'btn-big mt-4 mb-3 w-full font-bold uppercase',
-                tabOpening === 'BUY' ? 'btn-success' : 'btn-danger'
+                tabOpening === 'BUY' ? 'btn-success' : 'btn-danger',
+                checkDisableActionButton() ? 'btn-disabled' : ''
               )}
+              onClick={() => handleSubmitOrder()}
+              disabled={checkDisableActionButton()}
             >
               {limitOrder.action} {getMainTokenHandling().token}
             </button>
           </div>
         </div>
       </div>
-
-      {modalSearchShow && (
-        <ModalSearch onClose={() => setModalSearchShow(false)} />
-      )}
 
       <div className="card mt-4">
         <Collapsible

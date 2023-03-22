@@ -40,6 +40,11 @@ import SwapDeco from './imgs/swap-deco.svg';
 import TickSquare2 from './imgs/tick-square-2.svg';
 import TickSquare3 from './imgs/tick-square-3.svg';
 import TickSquare from './imgs/tick-square.svg';
+import ClockIcon from './imgs/ic_clock.svg';
+import SettingIcon from './imgs/ic-setting-2.svg';
+import ArrowRightWhite from './imgs/arrow-right-white.svg';
+import TextAlignRightIcon from './imgs/ic-text-align-right.svg';
+import USAFlag from './imgs/us.svg';
 
 export {
   ArrowCircleLeftIcon,
@@ -84,4 +89,9 @@ export {
   TickSquare3,
   TickSquare,
   MoreIcon,
+  ClockIcon,
+  SettingIcon,
+  ArrowRightWhite,
+  TextAlignRightIcon,
+  USAFlag,
 };

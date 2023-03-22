@@ -11,6 +11,7 @@ import TradingView from './TradingView';
 import WaitingOrder from './WaitingOrder';
 import OrderBook from './OrderBook';
 import CreateOrder from './CreateOrder';
+import ModalSearch from './ModalSearch';
 
 export default function Trading() {
   const [isCollapsedOrderBook, setIsCollapsedOrderBook] =
@@ -23,7 +24,13 @@ export default function Trading() {
           <TradingView />
         </div>
         <div>
-          <h3>Waiting Orders</h3>
+          <div className="my-5 flex">
+            <h3 className="mr-8 text-lg font-bold">Waiting Orders</h3>
+            <h3 className="mr-8 text-lg font-bold text-blackBg">Positions</h3>
+            <h3 className="mr-8 text-lg font-bold text-blackBg">
+              Trade History
+            </h3>
+          </div>
           <WaitingOrder />
         </div>
         <div
@@ -63,6 +70,8 @@ export default function Trading() {
       <div className="w-[360px]">
         <CreateOrder />
       </div>
+
+      <ModalSearch />
     </div>
   );
 }

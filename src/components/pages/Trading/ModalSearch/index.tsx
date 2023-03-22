@@ -1,7 +1,7 @@
 import Modal from 'src/components/Modal';
 import Image from 'next/image';
 import { SEARCH_INFORMATION } from '@/api/fakeData';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { setlimitOrder } from '@/recoil/store';
 import { PairToken } from '@/api/models';
 import {
@@ -11,13 +11,18 @@ import {
   Star3Icon,
   StarIcon,
 } from '@/assets';
+import { favoredState } from '@/recoil/states/favoredState';
+import { modalSearchState } from '@/recoil/states/modalSearchState';
 
-type ModalSearchProps = {
-  onClose: () => void;
-};
+type ModalSearchProps = {};
 
-const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
+const ModalSearch: React.FC<ModalSearchProps> = ({}) => {
   const setOrder = useSetRecoilState(setlimitOrder);
+  const [favoredStateValue, setFavoredStateValue] =
+    useRecoilState(favoredState);
+
+  const [isShow, setIsShow] = useRecoilState(modalSearchState);
+
   const handleSearch = (item: PairToken) => {
     setOrder({
       action: 'BUY',
@@ -32,10 +37,38 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
         image: item[1].image,
       },
     });
-    onClose();
+    setIsShow(false);
   };
+
+  const handleTickFavored = (id: string | number, tick: boolean) => {
+    if (tick)
+      return setFavoredStateValue({
+        listTopSearch: [
+          favoredStateValue.listFavored.filter(value => value.id === id)[0],
+          ...favoredStateValue.listTopSearch,
+        ],
+        listFavored: favoredStateValue.listFavored.filter(
+          value => value.id != id
+        ),
+      });
+
+    return setFavoredStateValue({
+      listFavored: [
+        favoredStateValue.listTopSearch.filter(value => value.id === id)[0],
+        ...favoredStateValue.listFavored,
+      ],
+      listTopSearch: favoredStateValue.listTopSearch.filter(
+        value => value.id != id
+      ),
+    });
+  };
+
   return (
-    <Modal onClose={onClose} width={920}>
+    <Modal
+      classNameContainer={`${isShow ? '' : 'hide'}`}
+      onClose={() => setIsShow(false)}
+      width={920}
+    >
       <div>
         <div className="relative w-full">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -49,7 +82,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
           />
           <div className="absolute inset-y-0 right-0 z-10 flex items-center pr-3">
             <button
-              onClick={onClose}
+              onClick={() => setIsShow(false)}
               className="rounded-lg bg-blackDefault px-2 py-1 font-bold text-white"
             >
               ESC
@@ -74,7 +107,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
             <span className="mb-7 block text-sm font-bold text-disabled">
               Your Favorited
             </span>
-            {SEARCH_INFORMATION.favoritedList.map((item, i) => (
+            {favoredStateValue.listFavored.map((item, i) => (
               <div
                 className="mb-12 flex items-center justify-between pr-9"
                 key={`${item.pairToken}-${i}`}
@@ -110,7 +143,12 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
                     </span>
                   </>
                 )}
-                <Image src={StarIcon} />
+                <button
+                  className="rounded-lg p-[6px] hover:bg-blueBg"
+                  onClick={() => handleTickFavored(item.id, true)}
+                >
+                  <Image src={StarIcon} />
+                </button>
               </div>
             ))}
           </div>
@@ -119,9 +157,9 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
             <span className="mb-7 block text-sm font-bold text-disabled">
               Top Search
             </span>
-            {SEARCH_INFORMATION.topSearch.map((item, i) => (
+            {favoredStateValue.listTopSearch.map((item, i) => (
               <div
-                className="mb-12 flex items-center justify-between pr-9"
+                className="mb-12 flex items-center justify-between pr-9 transition-all duration-200"
                 key={`${item.pairToken}-${i}`}
               >
                 <Image src={item.pairToken[0].image} width={16} height={16} />
@@ -155,7 +193,12 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ onClose }) => {
                     </span>
                   </>
                 )}
-                <Image src={Star3Icon} />
+                <button
+                  className="rounded-lg p-[6px] hover:bg-blueBg"
+                  onClick={() => handleTickFavored(item.id, false)}
+                >
+                  <Image src={Star3Icon} />
+                </button>
               </div>
             ))}
           </div>

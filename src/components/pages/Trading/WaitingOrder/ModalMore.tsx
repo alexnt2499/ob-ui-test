@@ -1,50 +1,73 @@
 import Modal from 'src/components/Modal';
-import icEyeSlash from 'src/assets/imgs/ic-eye-slash.svg';
 import Image from 'next/image';
-import { Eye2Icon, EyeSlashIcon } from '@/assets';
+import { Eye2Icon, EyeSlashIcon, TextAlignRightIcon } from '@/assets';
+import { useRecoilState } from 'recoil';
+import { arrangeTheInfoState } from '@/recoil/states/arrangeTheInfo';
 
 type ModalMoreProps = {
   onClose: () => void;
 };
 const ModalMore: React.FC<ModalMoreProps> = ({ onClose }) => {
+  const [arrangeTheInfo, setArrangeTheInfoState] =
+    useRecoilState(arrangeTheInfoState);
+
+  const onHoverField = (_id: number | string, _isHover: boolean) => {
+    setArrangeTheInfoState({
+      items: arrangeTheInfo.items.map(value => {
+        if (value.id == _id) {
+          return { ...value, isHover: _isHover };
+        }
+        return value;
+      }),
+    });
+  };
+
+  const onShowItem = (_id: number | string, _show: boolean) => {
+    setArrangeTheInfoState({
+      items: arrangeTheInfo.items.map(value => {
+        if (value.id == _id) {
+          return { ...value, show: _show, isHover: false };
+        }
+        return value;
+      }),
+    });
+  };
+
   return (
-    <Modal header="Arrange the informations" onClose={onClose}>
+    <Modal header="Arrange the information" onClose={onClose}>
       <div className="flex">
-        <div className="w-1/2 border-r border-r-blackBg pl-4">
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Time</span>
-          </div>
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Order Type</span>
-          </div>
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Action</span>
-          </div>
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Pair</span>
-          </div>
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Price</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Image src={Eye2Icon} />
-            <span className="text-xs font-bold">Amount</span>
-          </div>
+        <div className="w-1/2 border-r border-r-blackBg pr-2">
+          {arrangeTheInfo.items.map(value => (
+            <div
+              onMouseOver={() => onHoverField(value.id, true)}
+              onMouseOut={() => onHoverField(value.id, false)}
+              onClick={() => onShowItem(value.id, false)}
+              className={` flex ${
+                value.show ? 'mb-2 h-10 py-2' : 'h-0 py-0'
+              } cursor-pointer items-center justify-between overflow-hidden rounded-xl px-4  transition-all duration-200 hover:bg-blueBg`}
+            >
+              <div className="flex items-center">
+                <Image src={value.isHover ? EyeSlashIcon : Eye2Icon} />
+                <span className="text-xs font-bold">{value.text}</span>
+              </div>
+              {value.isHover ? <Image src={TextAlignRightIcon} /> : null}
+            </div>
+          ))}
         </div>
-        <div className="w-1/2 pl-8">
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={EyeSlashIcon} />
-            <span className="text-xs ">Matched</span>
-          </div>
-          <div className="mb-8 flex items-center gap-3">
-            <Image src={EyeSlashIcon} />
-            <span className="text-xs ">Total value(USD)</span>
-          </div>
+        <div className="w-1/2 pl-4">
+          {arrangeTheInfo.items.map(value => (
+            <div
+              onMouseOver={() => onHoverField(value.id, true)}
+              onMouseOut={() => onHoverField(value.id, false)}
+              onClick={() => onShowItem(value.id, true)}
+              className={`flex ${
+                !value.show ? 'mb-2 h-10 py-2' : 'h-0 py-0'
+              } cursor-pointer items-center overflow-hidden rounded-xl px-4  transition-all duration-200 hover:bg-blueBg`}
+            >
+              <Image src={!value.isHover ? EyeSlashIcon : Eye2Icon} />
+              <span className="text-xs font-bold">{value.text}</span>
+            </div>
+          ))}
         </div>
       </div>
     </Modal>

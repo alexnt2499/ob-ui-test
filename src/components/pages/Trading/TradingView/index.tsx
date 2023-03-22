@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { StaticImageData } from 'next/image';
-import ModalSearch from '../ModalSearch';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { limitOrderState } from '@/recoil/store';
 import Icon from '@/components/Icon';
 import { AdvancedRealTimeChartProps } from 'react-ts-tradingview-widgets/dist/components/AdvancedRealTimeChart';
@@ -14,6 +13,7 @@ import {
   CoinBNB,
   CoinEGLD,
 } from '@/assets';
+import { modalSearchState } from '@/recoil/states/modalSearchState';
 
 const AdvancedRealTimeChart = dynamic<AdvancedRealTimeChartProps>(
   () =>
@@ -47,8 +47,8 @@ const initPair = {
 
 export default function TradingView() {
   const [pairToken, setPairToken] = useState<PairToken>(initPair);
-  const [modalSearchShow, setModalSearchShow] = useState<boolean>(false);
   const pairWatching = useRecoilValue(limitOrderState);
+  const setIsShow = useSetRecoilState(modalSearchState);
 
   function handleSwitchPair() {
     setPairToken(prevPair => ({
@@ -81,7 +81,7 @@ export default function TradingView() {
       <div className="mb-6 flex items-center">
         <div
           className="focus:blueBg flex cursor-pointer items-center rounded-lg px-2 py-1 hover:bg-blackBg"
-          onClick={() => setModalSearchShow(true)}
+          onClick={() => setIsShow(true)}
         >
           <Image src={pairToken.mainToken.image} width={20} height={20} />
           <Image src={pairToken.comparedToken.image} width={20} height={20} />
@@ -145,10 +145,6 @@ export default function TradingView() {
             container_id="tradingview_e6d2a"
           ></AdvancedRealTimeChart>
         </div>
-      )}
-
-      {modalSearchShow && (
-        <ModalSearch onClose={() => setModalSearchShow(false)} />
       )}
     </div>
   );

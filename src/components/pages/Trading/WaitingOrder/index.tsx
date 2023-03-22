@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { WAITING_ORDER_LIST } from '@/api/fakeData';
-import classnames from 'classnames';
-import { OrderAction } from '@/api/models';
 import ModalCancelOrder from './ModalCancelOrder';
 import ModalMore from './ModalMore';
 import ModalOrderType from './ModalOrderType';
-import { ArrowDownIcon, CloseIcon, MoreIcon, SortIcon } from '@/assets';
+import { CloseIcon, MoreIcon } from '@/assets';
+import { useRecoilState } from 'recoil';
+import { arrangeTheInfoState } from '@/recoil/states/arrangeTheInfo';
+import { OrderAction } from '@/api/models';
+import { ordersState } from '@/recoil/states/ordersState';
 
 export default function WaitingOrder() {
   const [modalCancelShow, setModalCancelShow] = useState<boolean>(false);
   const [modalMoreShow, setModalMoreShow] = useState<boolean>(false);
   const [modalOrderTypeShow, setModalOrderTypeShow] = useState<boolean>(false);
+  const [arrangeTheInfo] = useRecoilState(arrangeTheInfoState);
+  const [orders] = useRecoilState(ordersState);
+  const [idSelectedDelete, setIdSelectedDelete] = useState<number | string>();
 
   return (
     <div>
@@ -19,106 +23,81 @@ export default function WaitingOrder() {
         <table className="w-full">
           <thead className="">
             <tr>
-              <th scope="col">
-                <div className="ml-0">
-                  Time
-                  <Image src={SortIcon} />
-                </div>
-              </th>
-              <th scope="col">
-                <div
-                  onClick={() => {
-                    setModalOrderTypeShow(true);
-                  }}
-                >
-                  Order Type
-                  <Image src={ArrowDownIcon} />
-                </div>
-              </th>
-              <th scope="col">
-                <div className="text-disabled">Action</div>
-              </th>
-              <th scope="col">
-                <div className="text-disabled">Pair</div>
-              </th>
-              <th scope="col">
-                <div>
-                  Price
-                  <Image src={SortIcon} />
-                </div>
-              </th>
-              <th scope="col">
-                <div>
-                  Amount
-                  <Image src={SortIcon} />
-                </div>
-              </th>
-              <th scope="col">
-                <div className="text-disabled">Total value (USDC)</div>
-              </th>
+              {arrangeTheInfo.items.map((value, index) => {
+                if (!value.show) return null;
+                return (
+                  <th scope="col">
+                    <div
+                      className={`${index === 0 ? 'ml-0' : ''} ${
+                        !value.icon ? 'text-disabled' : ''
+                      }`}
+                      onClick={() => {
+                        if (value.id === 2) setModalOrderTypeShow(true);
+                      }}
+                    >
+                      {value.text}
+                      {value.icon ? <Image src={value.icon} /> : null}
+                    </div>
+                  </th>
+                );
+              })}
+
               <th scope="col" className="w-9">
-                <div
-                  className="px-1"
+                <button
                   onClick={() => {
                     setModalMoreShow(true);
                   }}
                 >
-                  <Image src={MoreIcon} />
-                </div>
+                  <div className="px-1">
+                    <Image src={MoreIcon} />
+                  </div>
+                </button>
               </th>
             </tr>
           </thead>
           <tbody>
-            {WAITING_ORDER_LIST.map((order, i) => (
-              <tr key={i}>
-                <td className="">
-                  <span className="caption mb-1 block">00:00</span>
-                  24/12/2022
-                </td>
-                <td className="px-1 py-2 align-bottom">{order.type}</td>
-                <td
-                  className={classnames(
-                    'px-1 py-2 align-bottom font-bold',
-                    order.action === OrderAction.BUY
-                      ? 'text-success'
-                      : 'text-danger'
-                  )}
-                >
-                  {order.action}
-                </td>
-                <td className="px-1 py-2 align-bottom text-xs font-bold">
-                  {order.pair}
-                </td>
-                <td className="px-1 py-2 text-right align-bottom text-xs">
-                  {order.price.value}
-                  <span className="caption ml-1">{order.price.token}</span>
-                </td>
-                <td className="px-1 py-2 text-right align-bottom text-xs">
-                  {order.amount.value}
-                  <span className="caption ml-1">{order.amount.token}</span>
-                </td>
-                <td className="px-1 py-2 text-right align-bottom text-xs">
-                  {order.valueUSDC.value}
-                  <span className="caption ml-1">{order.valueUSDC.token}</span>
-                </td>
-                <td
-                  className="px-1 py-2 align-bottom"
-                  onClick={() => {
-                    setModalCancelShow(true);
-                  }}
-                >
-                  <button className="btn-small m-auto block h-4 p-0">
-                    <Image src={CloseIcon} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {orders.length > 0
+              ? orders.map((order, i) => {
+                  return (
+                    <tr key={i}>
+                      {arrangeTheInfo.items.map(value => {
+                        if (!value.show) return null;
+                        return value.Cell(
+                          order,
+                          order.action === OrderAction.BUY
+                            ? 'text-success'
+                            : 'text-danger'
+                        );
+                      })}
+                      <td className="px-1 py-2 align-bottom">
+                        <button
+                          onClick={() => {
+                            setIdSelectedDelete(order.id);
+                            setModalCancelShow(true);
+                          }}
+                          className="btn-small m-auto block h-4 p-0 hover:bg-red-300"
+                        >
+                          <Image src={CloseIcon} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              : null}
           </tbody>
         </table>
+        {orders.length === 0 ? (
+          <div className="mt-4 flex w-full justify-center">
+            You have not placed any orders yet.
+          </div>
+        ) : null}
       </div>
 
       {modalCancelShow && (
-        <ModalCancelOrder onClose={() => setModalCancelShow(false)} />
+        <ModalCancelOrder
+          idSelected={idSelectedDelete}
+          onClose={() => setModalCancelShow(false)}
+        />
       )}
 
       {modalMoreShow && <ModalMore onClose={() => setModalMoreShow(false)} />}

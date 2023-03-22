@@ -32,7 +32,7 @@ export default function Layout({ children }: LayoutProps) {
           {sideMenu.map((value, index) => (
             <li
               key={index}
-              className={`aside-menu-item cursor-pointer ${
+              className={`aside-menu-item cursor-pointer transition-all duration-200 ${
                 value.active ? 'active' : ''
               }`}
               onClick={() => onChangeSelect(index)}

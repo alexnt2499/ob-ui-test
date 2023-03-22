@@ -131,3 +131,7 @@ svg:hover plygon {
 svg:hover circle {
   fill: #fce57e;
 }
+
+.hide {
+  display: none !important;
+}
