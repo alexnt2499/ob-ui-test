@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import WaitingOrder from './components/WaitingOrder';
-import OrderBook from './components/OrderBook';
-import CreateOrder from './components/CreateOrder';
-import TradingView from './components/TradingView';
-import icCollapse1 from 'src/assets/imgs/arrow-circle-left.svg';
-import icCollapse2 from 'src/assets/imgs/arrow-circle-left-2.svg';
-import icCollapse3 from 'src/assets/imgs/arrow-circle-left-3.svg';
+
 import classnames from 'classnames';
 import Icon from '@/components/Icon';
+import {
+  ArrowCircleLeftIcon,
+  ArrowCircleLeftIcon2,
+  ArrowCircleLeftIcon3,
+} from '@/assets';
+import TradingView from './TradingView';
+import WaitingOrder from './WaitingOrder';
+import OrderBook from './OrderBook';
+import CreateOrder from './CreateOrder';
 
 export default function Trading() {
   const [isCollapsedOrderBook, setIsCollapsedOrderBook] =
@@ -15,7 +18,7 @@ export default function Trading() {
 
   return (
     <div className="flex w-full">
-      <div className="card flex-1 z-10 relative">
+      <div className="card relative z-10 flex-1">
         <div className="w-full">
           <TradingView />
         </div>
@@ -24,33 +27,33 @@ export default function Trading() {
           <WaitingOrder />
         </div>
         <div
-          className="w-6 h-6 absolute -right-3 top-6 cursor-pointer"
+          className="absolute -right-3 top-6 h-6 w-6 cursor-pointer"
           onClick={() => setIsCollapsedOrderBook(!isCollapsedOrderBook)}
         >
           <Icon
-            defaultSrc={icCollapse3}
-            hoverSrc={icCollapse2}
-            focusSrc={icCollapse1}
+            defaultSrc={ArrowCircleLeftIcon3}
+            hoverSrc={ArrowCircleLeftIcon2}
+            focusSrc={ArrowCircleLeftIcon}
           />
         </div>
       </div>
       <div
         className={classnames(
-          'card bg-[#FDFDFF]/60 -ml-10 mr-6 flex flex-col pl-16 ease-in-out duration-700 relative',
+          'card relative -ml-10 mr-6 flex flex-col bg-[#FDFDFF]/60 pl-16 duration-700 ease-in-out',
           isCollapsedOrderBook ? 'w-12' : 'w-60'
         )}
       >
         <div
           className={classnames(
             isCollapsedOrderBook ? 'opacity-0' : 'opacity-100',
-            'w-40 ease-in-out duration-700 absolute top-6 right-6'
+            'absolute top-6 right-6 w-40 duration-700 ease-in-out'
           )}
         >
           <OrderBook />
         </div>
         <span
           className={classnames(
-            'text-sm text-disabled font-bold rotate-90 ease-in-out duration-700 absolute top-12 -right-5',
+            'absolute top-12 -right-5 rotate-90 text-sm font-bold text-disabled duration-700 ease-in-out',
             isCollapsedOrderBook ? 'opacity-100' : 'opacity-0'
           )}
         >

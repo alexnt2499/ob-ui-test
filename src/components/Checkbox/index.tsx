@@ -1,8 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import checkedBox from 'src/assets/imgs/tick-square.svg';
-import uncheckedBox from 'src/assets/imgs/tick-square-3.svg';
 import Image from 'next/image';
+import { TickSquare, TickSquare3 } from '@/assets';
 
 interface CheckboxProps {
   id: string;
@@ -31,7 +30,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         className="hidden"
       />
       <label htmlFor={id}>
-        <Image src={checked ? checkedBox : uncheckedBox} />
+        <Image src={checked ? TickSquare : TickSquare3} />
       </label>
       <span className={classnames('ml-2 text-xs', checked ? 'font-bold' : '')}>
         {label}

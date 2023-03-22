@@ -1,12 +1,12 @@
 import Layout from '@/components/Layout';
-import Trading from '@/pages/Trading';
+import Trading from '@/components/pages/Trading';
 
 export default function IndexPage() {
   return (
     <Layout title="Trading">
       <main>
         <div className="block min-h-screen">
-          <div className="h-16 flex items-center">
+          <div className="flex h-16 items-center">
             <h1>Trading</h1>
           </div>
           <div className="min-h-screen">

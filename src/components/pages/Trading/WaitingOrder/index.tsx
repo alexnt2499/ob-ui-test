@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import icMore from 'src/assets/imgs/ic-more.svg';
-import icSort from 'src/assets/imgs/ic-sort.svg';
-import icClose from 'src/assets/imgs/ic-close.svg';
-import icArrowDown from 'src/assets/imgs/ic-arrow-down.svg';
 import { WAITING_ORDER_LIST } from '@/api/fakeData';
 import classnames from 'classnames';
 import { OrderAction } from '@/api/models';
 import ModalCancelOrder from './ModalCancelOrder';
 import ModalMore from './ModalMore';
 import ModalOrderType from './ModalOrderType';
+import { ArrowDownIcon, CloseIcon, MoreIcon, SortIcon } from '@/assets';
 
 export default function WaitingOrder() {
   const [modalCancelShow, setModalCancelShow] = useState<boolean>(false);
@@ -25,7 +22,7 @@ export default function WaitingOrder() {
               <th scope="col">
                 <div className="ml-0">
                   Time
-                  <Image src={icSort} />
+                  <Image src={SortIcon} />
                 </div>
               </th>
               <th scope="col">
@@ -35,7 +32,7 @@ export default function WaitingOrder() {
                   }}
                 >
                   Order Type
-                  <Image src={icArrowDown} />
+                  <Image src={ArrowDownIcon} />
                 </div>
               </th>
               <th scope="col">
@@ -47,13 +44,13 @@ export default function WaitingOrder() {
               <th scope="col">
                 <div>
                   Price
-                  <Image src={icSort} />
+                  <Image src={SortIcon} />
                 </div>
               </th>
               <th scope="col">
                 <div>
                   Amount
-                  <Image src={icSort} />
+                  <Image src={SortIcon} />
                 </div>
               </th>
               <th scope="col">
@@ -66,7 +63,7 @@ export default function WaitingOrder() {
                     setModalMoreShow(true);
                   }}
                 >
-                  <Image src={icMore} />
+                  <Image src={MoreIcon} />
                 </div>
               </th>
             </tr>
@@ -75,7 +72,7 @@ export default function WaitingOrder() {
             {WAITING_ORDER_LIST.map((order, i) => (
               <tr key={i}>
                 <td className="">
-                  <span className="caption block mb-1">00:00</span>
+                  <span className="caption mb-1 block">00:00</span>
                   24/12/2022
                 </td>
                 <td className="px-1 py-2 align-bottom">{order.type}</td>
@@ -92,15 +89,15 @@ export default function WaitingOrder() {
                 <td className="px-1 py-2 align-bottom text-xs font-bold">
                   {order.pair}
                 </td>
-                <td className="px-1 py-2 align-bottom text-xs text-right">
+                <td className="px-1 py-2 text-right align-bottom text-xs">
                   {order.price.value}
                   <span className="caption ml-1">{order.price.token}</span>
                 </td>
-                <td className="px-1 py-2 align-bottom text-xs text-right">
+                <td className="px-1 py-2 text-right align-bottom text-xs">
                   {order.amount.value}
                   <span className="caption ml-1">{order.amount.token}</span>
                 </td>
-                <td className="px-1 py-2 align-bottom text-xs text-right">
+                <td className="px-1 py-2 text-right align-bottom text-xs">
                   {order.valueUSDC.value}
                   <span className="caption ml-1">{order.valueUSDC.token}</span>
                 </td>
@@ -110,8 +107,8 @@ export default function WaitingOrder() {
                     setModalCancelShow(true);
                   }}
                 >
-                  <button className="btn-small h-4 p-0 block m-auto">
-                    <Image src={icClose} />
+                  <button className="btn-small m-auto block h-4 p-0">
+                    <Image src={CloseIcon} />
                   </button>
                 </td>
               </tr>
