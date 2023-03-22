@@ -28,6 +28,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className="flex bg-[#F1F1FF]">
       <div className="align-center flex w-16 flex-none flex-col rounded-r-lg bg-white p-2 pt-5">
         <Image src={logo} placeholder="blur" />
+        {/* </menu> */}
         <ul className="mt-8 space-y-2">
           {sideMenu.map((value, index) => (
             <li
