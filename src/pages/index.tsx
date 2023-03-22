@@ -1,4 +1,3 @@
-import { SearchNormal2 } from '@/assets';
 import Layout from '@/components/Layout';
 import Trading from '@/components/pages/Trading';
 import Header from '@/components/pages/Trading/Header';
