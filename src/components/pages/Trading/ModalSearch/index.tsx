@@ -89,7 +89,12 @@ const ModalSearch: React.FC<ModalSearchProps> = ({}) => {
             </button>
           </div>
         </div>
-        <span className="mt-9 block text-sm text-disabled">Recent Search</span>
+        <span
+          className="mt-9 block text-sm text-disabled"
+          data-cy="recent-search"
+        >
+          Recent Search
+        </span>
         <div className="mt-5 flex flex-wrap gap-2">
           {SEARCH_INFORMATION.recentSearch.map((item, i) => (
             <button
@@ -146,6 +151,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({}) => {
                 <button
                   className="rounded-lg p-[6px] hover:bg-blueBg"
                   onClick={() => handleTickFavored(item.id, true)}
+                  data-cy={`remove-btn-${i}`}
                 >
                   <Image src={StarIcon} />
                 </button>
@@ -196,6 +202,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({}) => {
                 <button
                   className="rounded-lg p-[6px] hover:bg-blueBg"
                   onClick={() => handleTickFavored(item.id, false)}
+                  data-cy={`add-btn-${i}`}
                 >
                   <Image src={Star3Icon} />
                 </button>

@@ -59,7 +59,9 @@ const ModalSetting = () => {
     return (
       <>
         <div className="flex items-center justify-between">
-          <h3 className="font-bold">Settings</h3>
+          <h3 className="font-bold" data-cy="setting-text">
+            Settings
+          </h3>
           <button
             onClick={() => setIsShow(false)}
             className="rounded-lg bg-blackDefault px-2 py-1 font-bold text-white"
@@ -78,6 +80,7 @@ const ModalSetting = () => {
                   value.active ? 'bg-white' : ''
                 } py-2`}
                 onClick={() => handleChooseTheme(value.id)}
+                data-cy={`setting-tab-${value.id}`}
               >
                 {value.icon}
                 <p className="mt-[2px] text-[12px] font-bold">{value.text}</p>
@@ -90,8 +93,9 @@ const ModalSetting = () => {
           <button
             onClick={() => setIsShowLangMenu(true)}
             className="flex w-full flex-col rounded-lg bg-blueBg p-3"
+            data-cy={`language-btn`}
           >
-            <p>Language</p>
+            <p>Languages</p>
 
             <div className="mt-6 flex w-full items-center justify-between">
               <div className="flex items-center">
@@ -137,7 +141,9 @@ const ModalSetting = () => {
               <Image src={ArrowDownIcon} />
             </div>
           </button>
-          <h3 className="font-bold">Languages</h3>
+          <h3 className="font-bold" data-cy="language-text">
+            Languages
+          </h3>
           <button
             onClick={() => setIsShow(false)}
             className="rounded-lg bg-blackDefault px-2 py-1 font-bold text-white"

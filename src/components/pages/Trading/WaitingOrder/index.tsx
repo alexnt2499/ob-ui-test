@@ -47,6 +47,7 @@ export default function WaitingOrder() {
                   onClick={() => {
                     setModalMoreShow(true);
                   }}
+                  data-cy="more-btn"
                 >
                   <div className="px-1">
                     <Image src={MoreIcon} />
@@ -76,6 +77,7 @@ export default function WaitingOrder() {
                             setModalCancelShow(true);
                           }}
                           className="btn-small m-auto block h-4 p-0 hover:bg-red-300"
+                          data-cy={`delete-order-btn-${i}`}
                         >
                           <Image src={CloseIcon} />
                         </button>

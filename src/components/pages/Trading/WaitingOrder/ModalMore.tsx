@@ -45,6 +45,7 @@ const ModalMore: React.FC<ModalMoreProps> = ({ onClose }) => {
               className={` flex ${
                 value.show ? 'mb-2 h-10 py-2' : 'h-0 py-0'
               } cursor-pointer items-center justify-between overflow-hidden rounded-xl px-4  transition-all duration-200 hover:bg-blueBg`}
+              data-cy={`hide-eye-${value.id}`}
             >
               <div className="flex items-center">
                 <Image src={value.isHover ? EyeSlashIcon : Eye2Icon} />
@@ -63,6 +64,7 @@ const ModalMore: React.FC<ModalMoreProps> = ({ onClose }) => {
               className={`flex ${
                 !value.show ? 'mb-2 h-10 py-2' : 'h-0 py-0'
               } cursor-pointer items-center overflow-hidden rounded-xl px-4  transition-all duration-200 hover:bg-blueBg`}
+              data-cy={`show-eye-${value.id}`}
             >
               <Image src={!value.isHover ? EyeSlashIcon : Eye2Icon} />
               <span className="text-xs font-bold">{value.text}</span>

@@ -16,6 +16,7 @@ const SettingConnect = () => {
       <button
         onClick={() => setIsShow(true)}
         className="mr-2 rounded-xl bg-white px-2 pt-2 pb-1"
+        data-cy="setting-btn"
       >
         <Image src={SettingIcon} />
       </button>

@@ -46,6 +46,7 @@ const ModalCancelOrder: React.FC<ModalCancelOrderProps> = ({
         <button
           className="btn-big btn-danger font-bold"
           onClick={handleDeleted}
+          data-cy="yes-delete-btn"
         >
           Yes, Cancel now
         </button>

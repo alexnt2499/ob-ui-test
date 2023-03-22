@@ -156,7 +156,7 @@ export default function CreateOrder() {
               </a>
             </li>
 
-            <li className="w-1/2" onClick={handleTabOpening}>
+            <li className="w-1/2" onClick={handleTabOpening} data-cy="sell-btn">
               <a
                 href="#"
                 className={classnames(
@@ -193,6 +193,7 @@ export default function CreateOrder() {
               </div>
               <input
                 type="number"
+                name="price"
                 id="input-group-1"
                 className="h-10 p-2.5 px-12 text-right text-lg"
                 placeholder="0.0"
@@ -231,6 +232,7 @@ export default function CreateOrder() {
                 onChange={e => handleChangeValueSpend(e.target.valueAsNumber)}
                 className="h-16 w-24 flex-auto p-2.5 text-right text-2xl"
                 placeholder="0.0"
+                name="spend"
               />
             </div>
             <span className="mt-2 block text-right text-disabled">
@@ -326,6 +328,7 @@ export default function CreateOrder() {
                 placeholder="0.0"
                 onChange={e => handleChangeValueBuy(e.target.valueAsNumber)}
                 value={inputBuy}
+                name="buy"
               />
             </div>
             <span className="mt-2 block text-right text-xs text-disabled">
@@ -340,6 +343,7 @@ export default function CreateOrder() {
               )}
               onClick={() => handleSubmitOrder()}
               disabled={checkDisableActionButton()}
+              data-cy="submit-order-btn"
             >
               {limitOrder.action} {getMainTokenHandling().token}
             </button>
