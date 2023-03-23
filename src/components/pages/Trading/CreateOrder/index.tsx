@@ -91,12 +91,12 @@ export default function CreateOrder() {
         value: inputPrice ?? 0.0,
       },
       amount: {
-        token: tabOpening === 'BUY' ? 'BNB' : 'EGLD',
-        value: inputBuy,
+        token: 'EGLD',
+        value: tabOpening === 'BUY' ? inputBuy : inputSpend,
       },
       valueUSDC: {
-        token: tabOpening !== 'BUY' ? 'BNB' : 'EGLD',
-        value: inputSpend,
+        token: 'BNB',
+        value: tabOpening === 'BUY' ? inputSpend : inputBuy,
       },
     };
 
