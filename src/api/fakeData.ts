@@ -1,6 +1,4 @@
 import {
-  WaitingOrder,
-  OrderType,
   OrderAction,
   OrderBookList,
   Trend,
@@ -13,80 +11,80 @@ import coinEGLD from 'src/assets/imgs/coin-egld.png';
 import coinBNB from 'src/assets/imgs/coin-bnb.png';
 import coinUSDT from 'src/assets/imgs/coin-usdt.png';
 
-export const WAITING_ORDER_LIST: WaitingOrder[] = [
-  {
-    time: 1677835884886,
-    type: OrderType.LIMIT_ORDER,
-    action: OrderAction.BUY,
-    pair: 'EGLD-ASH',
-    price: {
-      token: 'ASH',
-      value: 11111.12,
-    },
-    amount: {
-      token: 'EGLD',
-      value: 212.213,
-    },
-    valueUSDC: {
-      token: 'USDC',
-      value: 890.19,
-    },
-  },
-  {
-    time: 1677835884886,
-    type: OrderType.LIMIT_ORDER,
-    action: OrderAction.SELL,
-    pair: 'BTC-USDT',
-    price: {
-      token: 'USDT',
-      value: 11111.12,
-    },
-    amount: {
-      token: 'BTC',
-      value: 212.213,
-    },
-    valueUSDC: {
-      token: 'USDC',
-      value: 890.19,
-    },
-  },
-  {
-    time: 1677835884886,
-    type: OrderType.LIMIT_ORDER,
-    action: OrderAction.BUY,
-    pair: 'EGLD-ASH',
-    price: {
-      token: 'ASH',
-      value: 11111.12,
-    },
-    amount: {
-      token: 'EGLD',
-      value: 212.213,
-    },
-    valueUSDC: {
-      token: 'USDC',
-      value: 890.19,
-    },
-  },
-  {
-    time: 1677835884886,
-    type: OrderType.LIMIT_ORDER,
-    action: OrderAction.BUY,
-    pair: 'EGLD-ASH',
-    price: {
-      token: 'ASH',
-      value: 11111.12,
-    },
-    amount: {
-      token: 'EGLD',
-      value: 212.213,
-    },
-    valueUSDC: {
-      token: 'USDC',
-      value: 890.19,
-    },
-  },
-];
+// export const WAITING_ORDER_LIST: WaitingOrder[] = [
+//   {
+//     time: 1677835884886,
+//     type: OrderType.LIMIT_ORDER,
+//     action: OrderAction.BUY,
+//     pair: 'EGLD-ASH',
+//     price: {
+//       token: 'ASH',
+//       value: 11111.12,
+//     },
+//     amount: {
+//       token: 'EGLD',
+//       value: 212.213,
+//     },
+//     valueUSDC: {
+//       token: 'USDC',
+//       value: 890.19,
+//     },
+//   },
+//   {
+//     time: 1677835884886,
+//     type: OrderType.LIMIT_ORDER,
+//     action: OrderAction.SELL,
+//     pair: 'BTC-USDT',
+//     price: {
+//       token: 'USDT',
+//       value: 11111.12,
+//     },
+//     amount: {
+//       token: 'BTC',
+//       value: 212.213,
+//     },
+//     valueUSDC: {
+//       token: 'USDC',
+//       value: 890.19,
+//     },
+//   },
+//   {
+//     time: 1677835884886,
+//     type: OrderType.LIMIT_ORDER,
+//     action: OrderAction.BUY,
+//     pair: 'EGLD-ASH',
+//     price: {
+//       token: 'ASH',
+//       value: 11111.12,
+//     },
+//     amount: {
+//       token: 'EGLD',
+//       value: 212.213,
+//     },
+//     valueUSDC: {
+//       token: 'USDC',
+//       value: 890.19,
+//     },
+//   },
+//   {
+//     time: 1677835884886,
+//     type: OrderType.LIMIT_ORDER,
+//     action: OrderAction.BUY,
+//     pair: 'EGLD-ASH',
+//     price: {
+//       token: 'ASH',
+//       value: 11111.12,
+//     },
+//     amount: {
+//       token: 'EGLD',
+//       value: 212.213,
+//     },
+//     valueUSDC: {
+//       token: 'USDC',
+//       value: 890.19,
+//     },
+//   },
+// ];
 
 export const ORDER_BOOK: OrderBookList = {
   currentAverage: {
@@ -469,6 +467,7 @@ export const SEARCH_INFORMATION: SearchInformation = {
   ],
   favoritedList: [
     {
+      id: 1,
       pairToken: [
         { token: 'EGLD', image: coinEGLD },
         { token: 'ASH', image: coinASH },
@@ -477,6 +476,7 @@ export const SEARCH_INFORMATION: SearchInformation = {
       priceChanged: 0.00023,
     },
     {
+      id: 2,
       pairToken: [
         { token: 'EGLD', image: coinEGLD },
         { token: 'ASH', image: coinASH },
@@ -485,6 +485,7 @@ export const SEARCH_INFORMATION: SearchInformation = {
       priceChanged: 0.00023,
     },
     {
+      id: 3,
       pairToken: [
         { token: 'EGLD', image: coinEGLD },
         { token: 'ASH', image: coinASH },
@@ -495,6 +496,7 @@ export const SEARCH_INFORMATION: SearchInformation = {
   ],
   topSearch: [
     {
+      id: 4,
       pairToken: [
         { token: 'EGLD', image: coinEGLD },
         { token: 'ASH', image: coinASH },
@@ -503,30 +505,7 @@ export const SEARCH_INFORMATION: SearchInformation = {
       priceChanged: 0.00023,
     },
     {
-      pairToken: [
-        { token: 'EGLD', image: coinEGLD },
-        { token: 'ASH', image: coinASH },
-      ],
-      percentChanged: -1.09,
-      priceChanged: 0.00023,
-    },
-    {
-      pairToken: [
-        { token: 'EGLD', image: coinEGLD },
-        { token: 'ASH', image: coinASH },
-      ],
-      percentChanged: -1.09,
-      priceChanged: 0.00023,
-    },
-    {
-      pairToken: [
-        { token: 'EGLD', image: coinEGLD },
-        { token: 'ASH', image: coinASH },
-      ],
-      percentChanged: -1.09,
-      priceChanged: 0.00023,
-    },
-    {
+      id: 5,
       pairToken: [
         { token: 'EGLD', image: coinEGLD },
         { token: 'ASH', image: coinASH },

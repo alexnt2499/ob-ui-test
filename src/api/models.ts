@@ -7,8 +7,8 @@ export const enum OrderType {
 }
 
 export const enum OrderAction {
-  BUY = 'Buy',
-  SELL = 'Sell',
+  BUY = 'BUY',
+  SELL = 'SELL',
 }
 
 export const enum Trend {
@@ -23,6 +23,7 @@ export type SystemCurrency = {
 };
 
 export type WaitingOrder = {
+  id: string | number;
   time: number;
   type: OrderType;
   action: OrderAction;
@@ -74,6 +75,7 @@ export type PairToken = [
 ];
 
 export type PairSearched = {
+  id: string | number;
   pairToken: PairToken;
   percentChanged: number;
   priceChanged: number;
@@ -86,3 +88,12 @@ export type SearchInformation = {
 };
 
 export type WalletBalance = SystemCurrency[];
+
+export type ArrayTheInfoItem = {
+  id: string | number;
+  show: boolean;
+  text: string;
+  isHover: boolean;
+  icon?: StaticImageData | string;
+  Cell: (item: WaitingOrder, customStyleText?: string) => React.ReactElement;
+};

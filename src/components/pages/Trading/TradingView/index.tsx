@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import coinBNB from 'src/assets/imgs/coin-bnb.png';
-import coinEGLD from 'src/assets/imgs/coin-egld.png';
-import icArrow1 from 'src/assets/imgs/ic-arrow-1.svg';
-import icArrow2 from 'src/assets/imgs/ic-arrow-2.svg';
-import icArrow3 from 'src/assets/imgs/ic-arrow-3.svg';
 import { StaticImageData } from 'next/image';
-import ModalSearch from '../ModalSearch';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { limitOrderState } from '@/recoil/store';
 import Icon from '@/components/Icon';
 import { AdvancedRealTimeChartProps } from 'react-ts-tradingview-widgets/dist/components/AdvancedRealTimeChart';
+import {
+  Arrow1Icon,
+  Arrow2Icon,
+  Arrow3Icon,
+  CoinBNB,
+  CoinEGLD,
+} from '@/assets';
+import { modalSearchState } from '@/recoil/states/modalSearchState';
 
 const AdvancedRealTimeChart = dynamic<AdvancedRealTimeChartProps>(
   () =>
@@ -35,18 +37,18 @@ type PairToken = {
 const initPair = {
   mainToken: {
     token: 'EGLD',
-    image: coinEGLD,
+    image: CoinEGLD,
   },
   comparedToken: {
     token: 'BNB',
-    image: coinBNB,
+    image: CoinBNB,
   },
 };
 
 export default function TradingView() {
   const [pairToken, setPairToken] = useState<PairToken>(initPair);
-  const [modalSearchShow, setModalSearchShow] = useState<boolean>(false);
   const pairWatching = useRecoilValue(limitOrderState);
+  const setIsShow = useSetRecoilState(modalSearchState);
 
   function handleSwitchPair() {
     setPairToken(prevPair => ({
@@ -76,21 +78,21 @@ export default function TradingView() {
 
   return (
     <div>
-      <div className="flex items-center mb-6">
+      <div className="mb-6 flex items-center">
         <div
-          className="flex items-center rounded-lg px-2 py-1 hover:bg-blackBg focus:blueBg cursor-pointer"
-          onClick={() => setModalSearchShow(true)}
+          className="focus:blueBg flex cursor-pointer items-center rounded-lg px-2 py-1 hover:bg-blackBg"
+          onClick={() => setIsShow(true)}
         >
           <Image src={pairToken.mainToken.image} width={20} height={20} />
           <Image src={pairToken.comparedToken.image} width={20} height={20} />
-          <span className="text-lg font-bold mx-2">
+          <span className="mx-2 text-lg font-bold">
             {pairToken.mainToken.token}/{pairToken.comparedToken.token}
           </span>
           <Icon
-            defaultSrc={icArrow1}
-            hoverSrc={icArrow2}
-            focusSrc={icArrow3}
-            className="cursor-pointer hover:-rotate-180 easy-in-out duration-500"
+            defaultSrc={Arrow1Icon}
+            hoverSrc={Arrow2Icon}
+            focusSrc={Arrow3Icon}
+            className="easy-in-out cursor-pointer duration-500 hover:-rotate-180"
             onClick={e => {
               e.stopPropagation();
               handleSwitchPair();
@@ -98,25 +100,25 @@ export default function TradingView() {
           />
         </div>
         <div className="flex-auto" />
-        <div className="flex flex-col items-end gap-1 mr-4 w-24">
+        <div className="mr-4 flex w-24 flex-col items-end gap-1">
           <span className="text-disabled">$55.32</span>
-          <span className="text-danger font-bold text-xs">0.00023003</span>
+          <span className="text-xs font-bold text-danger">0.00023003</span>
         </div>
-        <div className="flex flex-col items-end gap-1 mr-4 w-24">
+        <div className="mr-4 flex w-24 flex-col items-end gap-1">
           <span className="text-disabled">24h change</span>
-          <span className="text-danger text-xs">-1.43%</span>
+          <span className="text-xs text-danger">-1.43%</span>
         </div>
-        <div className="flex flex-col items-end gap-1 mr-4 w-16">
+        <div className="mr-4 flex w-16 flex-col items-end gap-1">
           <span className="text-disabled">24h High</span>
           <span className="text-xs">2.8</span>
         </div>
-        <div className="flex flex-col items-end gap-1 w-16">
+        <div className="flex w-16 flex-col items-end gap-1">
           <span className="text-disabled">24h Low</span>
           <span className="text-xs">1.2</span>
         </div>
       </div>
-      <ul className="flex rounded overflow-hidden bg-blueBg w-min text-center text-xs mb-6">
-        <li className="w-12 py-2 dark:bg-blackDefault dark:text-white dark rounded">
+      <ul className="mb-6 flex w-min overflow-hidden rounded bg-blueBg text-center text-xs">
+        <li className="dark w-12 rounded py-2 dark:bg-blackDefault dark:text-white">
           5m
         </li>
         <li className="w-12 py-2">15m</li>
@@ -143,10 +145,6 @@ export default function TradingView() {
             container_id="tradingview_e6d2a"
           ></AdvancedRealTimeChart>
         </div>
-      )}
-
-      {modalSearchShow && (
-        <ModalSearch onClose={() => setModalSearchShow(false)} />
       )}
     </div>
   );

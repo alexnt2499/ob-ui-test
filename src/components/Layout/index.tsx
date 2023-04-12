@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import logo from 'src/assets/imgs/logo.png';
-import icTradeBlack from 'src/assets/imgs/ic_trade_black.svg';
-import icTradeRed from 'src/assets/imgs/ic_trade_red.svg';
+import { sideMenu } from '@/utils/menu';
+import { useState } from 'react';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -9,31 +9,39 @@ type LayoutProps = {
 };
 
 export default function Layout({ children }: LayoutProps) {
+  const [sideMenuState, setSideMenuState] = useState(sideMenu);
+
+  const onChangeSelect = (_index: number) => {
+    setSideMenuState(
+      sideMenuState.map((value, index) => {
+        if (_index === index) {
+          value.active = true;
+          return value;
+        }
+        value.active = false;
+        return value;
+      })
+    );
+  };
+
   return (
     <div className="flex bg-[#F1F1FF]">
-      <div className="flex-none rounded-r-lg w-16 p-2 pt-5 bg-white flex flex-col align-center">
+      <div className="align-center flex w-16 flex-none flex-col rounded-r-lg bg-white p-2 pt-5">
         <Image src={logo} placeholder="blur" />
-        <ul className="space-y-2 mt-8">
-          <li className="aside-menu-item active">
-            <Image src={icTradeRed} />
-            <span className="item-name">Trade</span>
-          </li>
-          <li className="aside-menu-item">
-            <Image src={icTradeBlack} />
-            <span className="item-name">Pool</span>
-          </li>
-          <li className="aside-menu-item">
-            <Image src={icTradeBlack} />
-            <span className="item-name">Farm</span>
-          </li>
-          <li className="aside-menu-item">
-            <Image src={icTradeBlack} />
-            <span className="item-name">Governance</span>
-          </li>
-          <li className="aside-menu-item">
-            <Image src={icTradeBlack} />
-            <span className="item-name">Analytics</span>
-          </li>
+        {/* </menu> */}
+        <ul className="mt-8 space-y-2">
+          {sideMenu.map((value, index) => (
+            <li
+              key={index}
+              className={`aside-menu-item cursor-pointer transition-all duration-200 ${
+                value.active ? 'active' : ''
+              }`}
+              onClick={() => onChangeSelect(index)}
+            >
+              <Image src={value.active ? value.iconActive : value.icon} />
+              <span className="item-name">{value.label}</span>
+            </li>
+          ))}
         </ul>
         {/* <ul className="space-y-2">
           <li>

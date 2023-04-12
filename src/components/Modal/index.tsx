@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 
 type PopupModalProps = {
   className?: string;
+  classNameContainer?: string;
   header?: string;
   headerSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl';
   width?: number;
@@ -14,6 +15,7 @@ type PopupModalProps = {
 const PopupModal: React.FC<PopupModalProps> = ({
   children,
   className,
+  classNameContainer,
   header,
   headerSize = 'sm',
   onClose,
@@ -34,7 +36,12 @@ const PopupModal: React.FC<PopupModalProps> = ({
 
   return (
     <div
-      className={classnames(styles.backdrop, styles.show, 'text-blackDefault')}
+      className={classnames(
+        styles.backdrop,
+        styles.show,
+        'text-blackDefault',
+        classNameContainer
+      )}
     >
       <div
         className={classnames(
@@ -50,7 +57,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
               <span className={`text-${headerSize} font-bold`}>{header}</span>
               <button
                 onClick={onClose}
-                className="bg-blackDefault text-white font-bold rounded-lg px-2 py-1"
+                className="rounded-lg bg-blackDefault px-2 py-1 font-bold text-white"
               >
                 ESC
               </button>
@@ -58,7 +65,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
             <hr className="my-6" />
           </>
         )}
-        <div className={styles.content}>{children}</div>
+        <div className={`${styles.content}`}>{children}</div>
       </div>
     </div>
   );
